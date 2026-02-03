@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Парфюм - Подбор аромата</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Onest:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* Сброс и базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        html, body {
+            margin: 0;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Onest', sans-serif;
+        }
+        
+        /* Основной контейнер - БЕЗ ЧЁРНОЙ ГРАНИЦЫ */
+        .screen {
+            background-color: #ffffff;
+            width: 1200px;
+            height: 777px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* ========== СЛОЙ 1: Большой розовый прямоугольник (фон) ========== */
+        .screen .rectangle {
+            position: absolute;
+            top: 78px;
+            left: 248px;
+            width: 710px;
+            height: 628px;
+            background-color: #e9ccc4;
+            border-radius: 51px;
+            z-index: 1;
+        }
+        
+        /* ========== СЛОЙ 2: ФИОЛЕТОВЫЙ ВЕКТОР (ваш SVG) ========== */
+        .screen .vector {
+            position: absolute;
+            top: 57px;
+            left: 211px;
+            width: 774px;
+            height: 672px;
+            z-index: 2;
+        }
+        
+        /* ========== СЛОЙ 3-6: Дополнительные розовые прямоугольники (перекрывают вектор) ========== */
+        .screen .rectangle-6 {
+            position: absolute;
+            top: 78px;
+            left: 248px;
+            width: 193px;
+            height: 230px;
+            background-color: #e9ccc4;
+            border-radius: 51px;
+            z-index: 3;
+        }
+        
+        .screen .rectangle-7 {
+            position: absolute;
+            top: 78px;
+            left: 807px;
+            width: 151px;
+            height: 335px;
+            background-color: #e9ccc4;
+            border-radius: 51px;
+            z-index: 3;
+        }
+        
+        .screen .rectangle-8 {
+            position: absolute;
+            top: 604px;
+            left: 629px;
+            width: 329px;
+            height: 102px;
+            background-color: #e9ccc4;
+            border-radius: 51px;
+            z-index: 3;
+        }
+        
+        .screen .rectangle-9 {
+            position: absolute;
+            top: 563px;
+            left: 248px;
+            width: 172px;
+            height: 143px;
+            background-color: #e9ccc4;
+            border-radius: 51px;
+            z-index: 3;
+        }
+        
+        /* ========== СЛОЙ 7-12: БЕЛЫЕ ПОЛЯ ВВОДА ========== */
+        /* Контейнеры для полей */
+        .field-container {
+            position: absolute;
+            z-index: 4;
+        }
+        
+        /* Поле "Пол" (слева вверху) */
+        .field-gender {
+            top: 255px;
+            left: 323px;
+            width: 269px;
+            height: 29px;
+        }
+        
+        /* Поле "Группа ароматов" */
+        .field-aroma {
+            top: 312px;
+            left: 323px;
+            width: 269px;
+            height: 29px;
+        }
+        
+        /* Поле "Сезон" */
+        .field-season {
+            top: 372px;
+            left: 323px;
+            width: 269px;
+            height: 29px;
+        }
+        
+        /* Поле "Ассоциации" */
+        .field-associations {
+            top: 438px;
+            left: 323px;
+            width: 269px;
+            height: 90px;
+        }
+        
+        /* Поле "Магазин" (справа сверху) */
+        .field-shop {
+            top: 390px;
+            left: 648px;
+            width: 232px;
+            height: 30px;
+        }
+        
+        /* Поле "Модель LLM" (справа снизу) */
+        .field-llm {
+            top: 464px;
+            left: 648px;
+            width: 232px;
+            height: 29px;
+        }
+        
+        /* Стили самих полей ввода - ВСЕ БЕЛЫЕ */
+        .field-input {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            border-radius: 38px;
+            border: 0.5px solid #000000;
+            padding: 0 20px;
+            font-family: 'Onest', sans-serif;
+            font-size: 16px;
+            color: #888888;
+            outline: none;
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* При выборе значения - чёрный текст */
+        .field-input.has-value {
+            color: #000000;
+        }
+        
+        textarea.field-input {
+            padding: 15px 20px;
+            resize: none;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #888888;
+        }
+        
+        textarea.field-input.has-value {
+            color: #000000;
+        }
+        
+        select.field-input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: #ffffff url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23888888' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 20px center;
+            cursor: pointer;
+            padding-right: 40px;
+        }
+        
+        select.field-input.has-value {
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23000000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            color: #000000;
+        }
+        
+        /* ========== УБРАНЫ МЕТКИ ПОЛЕЙ (тексты "Пол", "Группа ароматов" и т.д.) ========== */
+        /* Эти элементы удалены - теперь только placeholder в полях */
+        
+            /* ========== СЛОЙ 13: Заголовок "Парфюм" ========== */
+        .screen .text-wrapper-5 {
+            position: absolute;
+            top: 137px;
+            left: 697px;
+            width: 183px;
+            font-family: 'Lobster', cursive;
+            color: #362549;
+            font-size: 40px;
+            font-weight: 400;
+            z-index: 7;
+            text-align: center;
+        }
+
+        /* ========== СЛОЙ 14: Иконка парфюма ========== */
+        .screen .icons {
+            position: absolute;
+            top: 210px; /* На 53px ниже заголовка (было 81px) */
+            left: 730px; /* Центрировано по горизонтали */
+            width: 117px;
+            height: 117px;
+            z-index: 7;
+            object-fit: contain;
+            display: block;
+        }
+                
+        /* ========== СЛОЙ 15-16: Кнопка "Получить парфюм" ========== */
+        /* Кнопка - контейнер для текста */
+        .screen .rectangle-12 {
+            position: absolute;
+            top: 557px;
+            left: 648px;
+            width: 232px;
+            height: 88px;
+            background-color: #b85e6a;
+            border-radius: 90px;
+            border: 0.5px solid #000000;
+            z-index: 8;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Делаем кнопку контейнером для текста */
+            position: relative;
+        }
+
+        .screen .rectangle-12:hover {
+            background-color: #a54c58;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(184, 94, 106, 0.3);
+        }
+
+        /* Текст кнопки - позиционируем ОТНОСИТЕЛЬНО КНОПКИ */
+        .screen .rectangle-12 .button-text {
+            font-family: 'Lobster', cursive;
+            color: #362549;
+            font-size: 24px;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.3;
+            pointer-events: none;
+            margin: 0;
+            padding: 0;
+            /* Текст теперь внутри кнопки и центрируется относительно неё */
+        }
+        /* Эффекты при фокусе на полях */
+        .field-input:focus {
+            border-color: #b85e6a;
+            box-shadow: 0 0 0 2px rgba(184, 94, 106, 0.2);
+            color: #000000;
+        }
+        
+        /* Для маленьких экранов - масштабирование */
+        @media (max-width: 1250px) {
+            body {
+                transform: scale(0.9);
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            body {
+                transform: scale(0.8);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            body {
+                transform: scale(0.7);
+            }
+        }
+        
+        @media (max-width: 700px) {
+            body {
+                transform: scale(0.6);
+                overflow: auto;
+            }
+        }
+        
+        /* Стили для placeholder */
+        .field-input::placeholder {
+            color: #888888;
+            opacity: 1;
+        }
+        
+        /* Убираем стандартные стрелки у select в Firefox */
+        select.field-input {
+            text-indent: 1px;
+            text-overflow: '';
+        }
+        
+        select.field-input:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #888;
+        }
+        
+        select.field-input.has-value:-moz-focusring {
+            text-shadow: 0 0 0 #000;
+        }
+        
+        /* Специальные placeholder для select (они не поддерживают ::placeholder) */
+        option[value=""][disabled] {
+            color: #888888;
+            display: none; /* Скрываем в выпадающем списке */
+        }
+        
+        select:invalid {
+            color: #888888;
+        }
+        
+        select:valid {
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+        <!-- СЛОЙ 1: Большой розовый фон -->
+        <div class="rectangle"></div>
+        
+        <!-- СЛОЙ 2: ФИОЛЕТОВЫЙ ВЕКТОР (ваш SVG) -->
+        <svg class="vector" width="774" height="672" viewBox="0 0 775 673" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.48373 224.559C19.8004 198.564 38.0176 178.467 58.207 164.986C99.1038 137.678 141.277 102.295 142.593 53.1366C144.141 -4.66977 227.795 -10.7476 237.682 46.2279L240.986 65.2681C246.052 94.4612 275.32 112.811 303.804 104.653L571.542 27.9675L624.265 17.422C674.687 7.33676 723.882 39.5446 734.804 89.7918C736.944 99.6351 737.491 109.758 736.425 119.774L729.93 180.805C727.701 201.74 734.541 222.629 748.72 238.193C765.993 257.152 772.157 283.734 764.991 308.36L738.035 401.004L722.423 475.528C718.005 496.622 726.734 518.299 744.538 530.444C787.828 559.972 766.929 627.697 714.528 627.697H684.735C681.172 627.697 677.615 628.002 674.104 628.609L578.568 645.112L499.411 661.751C488.314 664.084 476.901 664.512 465.66 663.018L398.828 654.132C384.541 652.232 371.103 646.261 360.118 636.931C334.191 614.911 296.699 613.072 268.742 632.449L264.204 635.594C255.141 641.875 244.909 646.27 234.113 648.519L154.918 665.012C131.564 669.876 109.64 652.048 109.64 628.192C109.64 604.715 88.3684 586.977 65.2736 591.194L59.3772 592.271C23.7107 598.785 -3.27586 560.611 14.7609 529.159L63.4348 444.285C78.8318 417.437 79.0006 384.475 63.8793 357.471L14.7601 269.751C6.97602 255.849 3.60662 239.368 9.48373 224.559Z" stroke="#784D61" stroke-width="13"/>
+        </svg>
+        
+        <!-- СЛОЙ 3-6: Дополнительные розовые прямоугольники (перекрывают вектор) -->
+        <div class="rectangle-6"></div>
+        <div class="rectangle-7"></div>
+        <div class="rectangle-8"></div>
+        <div class="rectangle-9"></div>
+        
+        <!-- СЛОЙ 7-12: ПОЛЯ ВВОДА ТОЛЬКО С PLACEHOLDER -->
+        <!-- Пол - только placeholder -->
+        <div class="field-container field-gender">
+            <select class="field-input" id="gender" required>
+                <option value="" disabled selected>Выберите пол</option>
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+                <option value="unisex">Унисекс</option>
+            </select>
+        </div>
+        
+        <!-- Группа ароматов - только placeholder -->
+        <div class="field-container field-aroma">
+            <select class="field-input" id="aroma" required>
+                <option value="" disabled selected>Выберите группу</option>
+                <option value="woody">Древесные</option>
+                <option value="floral">Цветочные</option>
+                <option value="fresh">Свежие</option>
+                <option value="oriental">Ориентальные</option>
+                <option value="fruity">Фруктовые</option>
+                <option value="gourmand">Гурманские</option>
+            </select>
+        </div>
+        
+        <!-- Сезон - только placeholder -->
+        <div class="field-container field-season">
+            <select class="field-input" id="season" required>
+                <option value="" disabled selected>Выберите сезон</option>
+                <option value="spring">Весна</option>
+                <option value="summer">Лето</option>
+                <option value="autumn">Осень</option>
+                <option value="winter">Зима</option>
+                <option value="all">Круглый год</option>
+            </select>
+        </div>
+        
+        <!-- Ассоциации - только placeholder -->
+        <div class="field-container field-associations">
+            <textarea class="field-input" id="associations" placeholder="Введите ваши ассоциации..."></textarea>
+        </div>
+        
+        <!-- Магазин - только placeholder -->
+        <div class="field-container field-shop">
+            <select class="field-input" id="shop" required>
+                <option value="" disabled selected>Выберите магазин</option>
+                <option value="letual">Летуаль</option>
+                <option value="goldapple">Золотое яблоко</option>
+                <option value="rivegauche">Рив Гош</option>
+                <option value="sephora">Сепхора</option>
+                <option value="ili">ИЛЬ ДЕ БОТЭ</option>
+            </select>
+        </div>
+        
+        <!-- Модель LLM - только placeholder -->
+        <div class="field-container field-llm">
+            <select class="field-input" id="llm" required>
+                <option value="" disabled selected>Выберите модель</option>
+                <option value="gpt4">GPT-4</option>
+                <option value="gpt3">GPT-3.5</option>
+                <option value="claude">Claude</option>
+                <option value="gemini">Gemini</option>
+                <option value="yandexgpt">YandexGPT</option>
+            </select>
+        </div>
+        
+        <!-- СЛОЙ 13: Заголовок -->
+        <div class="text-wrapper-5">Парфюм</div>
+        
+        <!-- СЛОЙ 14: Иконка парфюма -->
+        <!-- Абсолютный путь -->
+        <img class="icons" src="{{ url_for('static', filename='icons.png') }}" alt="Иконка">
+        <!-- СЛОЙ 15-16: Кнопка -->
+        <div class="rectangle-12" id="getPerfumeBtn">
+            <div class="button-text">Получить <br />парфюм</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Автоматическое управление цветом текста в select
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            // При загрузке
+            if (select.value === '') {
+                select.style.color = '#888888';
+            } else {
+                select.style.color = '#000000';
+                select.classList.add('has-value');
+            }
+            
+            // При изменении
+            select.addEventListener('change', function() {
+                if (this.value === '') {
+                    this.style.color = '#888888';
+                    this.classList.remove('has-value');
+                } else {
+                    this.style.color = '#000000';
+                    this.classList.add('has-value');
+                }
+            });
+        });
+        
+        // Для textarea
+        const textarea = document.getElementById('associations');
+        textarea.addEventListener('input', function() {
+            if (this.value) {
+                this.classList.add('has-value');
+            } else {
+                this.classList.remove('has-value');
+            }
+        });
+        
+        // Обработка кнопки
+        document.getElementById('getPerfumeBtn').addEventListener('click', function() {
+            const button = this;
+            const text = document.querySelector('.text-wrapper-8');
+            
+            // Сохраняем оригинальный текст
+            const originalText = text.textContent;
+            
+            // Меняем текст
+            text.textContent = 'Ищем...';
+            button.style.opacity = '0.8';
+            button.style.cursor = 'wait';
+            
+            // Получаем значения из формы
+            const gender = document.getElementById('gender').value;
+            const aroma = document.getElementById('aroma').value;
+            const season = document.getElementById('season').value;
+            const shop = document.getElementById('shop').value;
+            const llm = document.getElementById('llm').value;
+            const associations = document.getElementById('associations').value;
+            
+            // Проверка заполнения обязательных полей
+            if (!gender || !aroma || !season || !shop || !llm) {
+                setTimeout(() => {
+                    alert('Пожалуйста, заполните все обязательные поля!');
+                    text.textContent = originalText;
+                    button.style.opacity = '1';
+                    button.style.cursor = 'pointer';
+                }, 500);
+                return;
+            }
+            
+            // Имитация поиска
+            setTimeout(() => {
+                // Восстанавливаем
+                text.textContent = originalText;
+                button.style.opacity = '1';
+                button.style.cursor = 'pointer';
+                
+                // Показываем результат
+                const perfumes = {
+                    male: {
+                        woody: { name: "Dior Sauvage", brand: "Dior", desc: "Свежий мужской аромат" },
+                        fresh: { name: "Bleu de Chanel", brand: "Chanel", desc: "Элегантный парфюм" },
+                        floral: { name: "L'Homme", brand: "YSL", desc: "Утончённый аромат" }
+                    },
+                    female: {
+                        floral: { name: "Chanel N°5", brand: "Chanel", desc: "Легендарный парфюм" },
+                        oriental: { name: "Black Opium", brand: "YSL", desc: "Соблазнительный аромат" },
+                        gourmand: { name: "La Vie Est Belle", brand: "Lancôme", desc: "Сладкий парфюм" }
+                    },
+                    unisex: {
+                        fresh: { name: "Wood Sage & Sea Salt", brand: "Jo Malone", desc: "Свежий унисекс" },
+                        woody: { name: "Santal 33", brand: "Le Labo", desc: "Древесный унисекс" }
+                    }
+                };
+                
+                const perfume = perfumes[gender]?.[aroma] || 
+                    { name: "Универсальный парфюм", brand: "Разные бренды", desc: "Подходящий под ваш запрос" };
+                
+                // Красивый вывод
+                const shopName = document.getElementById('shop').options[document.getElementById('shop').selectedIndex].text;
+                const llmName = document.getElementById('llm').options[document.getElementById('llm').selectedIndex].text;
+                
+                alert(`🎯 РЕКОМЕНДОВАННЫЙ ПАРФЮМ:\n\n✨ ${perfume.name}\n🏷️ Бренд: ${perfume.brand}\n📝 Описание: ${perfume.desc}`);
+            }, 1500);
+        });
+        
+        // Автофокус на первое поле
+        document.getElementById('gender').focus();
+    </script>
+</body>
+</html>
