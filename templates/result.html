@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Onest:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}" />
+    <title>Результат подбора</title>
+  </head>
+  <body data-request-id="{{ request_id }}">
+    <div class="screen">
+      <div class="rectangle"></div>
+
+      <svg class="vector" width="774" height="672" viewBox="0 0 775 673" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.48373 224.559C19.8004 198.564 38.0176 178.467 58.207 164.986C99.1038 137.678 141.277 102.295 142.593 53.1366C144.141 -4.66977 227.795 -10.7476 237.682 46.2279L240.986 65.2681C246.052 94.4612 275.32 112.811 303.804 104.653L571.542 27.9675L624.265 17.422C674.687 7.33676 723.882 39.5446 734.804 89.7918C736.944 99.6351 737.491 109.758 736.425 119.774L729.93 180.805C727.701 201.74 734.541 222.629 748.72 238.193C765.993 257.152 772.157 283.734 764.991 308.36L738.035 401.004L722.423 475.528C718.005 496.622 726.734 518.299 744.538 530.444C787.828 559.972 766.929 627.697 714.528 627.697H684.735C681.172 627.697 677.615 628.002 674.104 628.609L578.568 645.112L499.411 661.751C488.314 664.084 476.901 664.512 465.66 663.018L398.828 654.132C384.541 652.232 371.103 646.261 360.118 636.931C334.191 614.911 296.699 613.072 268.742 632.449L264.204 635.594C255.141 641.875 244.909 646.27 234.113 648.519L154.918 665.012C131.564 669.876 109.64 652.048 109.64 628.192C109.64 604.715 88.3684 586.977 65.2736 591.194L59.3772 592.271C23.7107 598.785 -3.27586 560.611 14.7609 529.159L63.4348 444.285C78.8318 417.437 79.0006 384.475 63.8793 357.471L14.7601 269.751C6.97602 255.849 3.60662 239.368 9.48373 224.559Z" stroke="#784D61" stroke-width="13"/>
+      </svg>
+
+      <div class="rectangle-2"></div>
+      <div class="rectangle-3"></div>
+      <div class="rectangle-4"></div>
+      <div class="rectangle-5"></div>
+
+      <div class="text-wrapper-2">Парфюм</div>
+
+      <div class="text-wrapper-3">Название:</div>
+      <div class="text-wrapper-brand">Бренд:</div>
+      <div class="text-wrapper-5">Цена:</div>
+      <div class="div">Ссылка:</div>
+      <a id="linkField" class="field field-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+      <div class="text-wrapper">Описание с сайта:</div>
+
+      <div class="rectangle-6">
+        <img id="imagePreview" class="photo-image" alt="">
+      </div>
+
+      <input id="nameField" class="field field-name" readonly>
+      <input id="brandField" class="field field-brand" readonly>
+      <input id="priceField" class="field field-price" readonly>
+      <a id="linkField" class="field field-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+      <textarea id="descriptionField" class="field field-description" readonly></textarea>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/result.js') }}"></script>
+  </body>
+</html>
