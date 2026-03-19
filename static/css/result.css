@@ -227,3 +227,20 @@ body {
   object-fit: contain;
   display: none;
 }
+
+.field-link {
+  cursor: default;
+}
+
+.field-link.link-active {
+  color: #4b2f63;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.field-link.link-active:hover {
+  color: #784D61;
+  background-color: #f7f2ef;
+}

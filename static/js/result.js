@@ -26,10 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const linkField = document.getElementById('linkField');
     if (data.link) {
         linkField.href = data.link;
-        linkField.textContent = data.link;
+        linkField.textContent = 'Открыть страницу товара ↗';
+        linkField.title = data.link;
+        linkField.classList.add('link-active');
     } else {
         linkField.removeAttribute('href');
-        linkField.textContent = '';
+        linkField.textContent = 'Ссылка недоступна';
+        linkField.title = '';
+        linkField.classList.remove('link-active');
     }
 
     const image = document.getElementById('imagePreview');
@@ -64,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             localStorage.removeItem(storageKey);
         } catch (e) {
-            // ничего
         }
     };
 

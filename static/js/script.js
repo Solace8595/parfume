@@ -30,6 +30,24 @@ if (textarea) {
     });
 }
 
+const llmSelect = document.getElementById('llm');
+const gigachatWarning = document.getElementById('gigachatWarning');
+
+function toggleGigachatWarning() {
+    if (!llmSelect || !gigachatWarning) return;
+
+    if (llmSelect.value === 'gigachat') {
+        gigachatWarning.classList.remove('hidden');
+    } else {
+        gigachatWarning.classList.add('hidden');
+    }
+}
+
+if (llmSelect) {
+    llmSelect.addEventListener('change', toggleGigachatWarning);
+    toggleGigachatWarning();
+}
+
 document.getElementById('getPerfumeBtn').addEventListener('click', async function () {
     const button = this;
 
@@ -97,4 +115,6 @@ document.getElementById('clearBtn').addEventListener('click', function () {
         select.style.color = '#888888';
         select.classList.remove('has-value');
     });
+
+    toggleGigachatWarning();
 });
