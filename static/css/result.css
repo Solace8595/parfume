@@ -45,28 +45,6 @@ body {
   height: 672px;
 }
 
-.screen .text-wrapper {
-  top: 520px;
-  left: 320px;
-  width: 220px;
-  font-weight: 700;
-  color: #000000;
-  font-size: 16px;
-  white-space: nowrap;
-  position: absolute;
-}
-
-.screen .div {
-  top: 442px;
-  left: 320px;
-  width: 136px;
-  font-weight: 700;
-  color: #000000;
-  font-size: 16px;
-  white-space: nowrap;
-  position: absolute;
-}
-
 .screen .rectangle-2 {
   position: absolute;
   top: 78px;
@@ -108,54 +86,71 @@ body {
 }
 
 .screen .text-wrapper-2 {
+  position: absolute;
   top: 128px;
-  left: 670px;
-  width: 220px;
+  left: 650px;
+  width: 260px;
   text-align: center;
   font-family: "Lobster", cursive;
   font-weight: 400;
   color: #362549;
   font-size: 56px;
   white-space: nowrap;
-  position: absolute;
 }
 
 .screen .text-wrapper-3 {
-  top: 196px;
+  position: absolute;
+  top: 190px;
   left: 320px;
-  width: 117px;
   font-weight: 700;
   color: #000000;
   font-size: 16px;
   white-space: nowrap;
-  position: absolute;
-}
-
-.screen .text-wrapper-brand {
-  top: 312px;
-  left: 320px;
-  width: 117px;
-  font-weight: 700;
-  color: #000000;
-  font-size: 16px;
-  white-space: nowrap;
-  position: absolute;
 }
 
 .screen .text-wrapper-5 {
-  top: 428px;
+  position: absolute;
+  top: 280px;
   left: 320px;
-  width: 117px;
   font-weight: 700;
   color: #000000;
   font-size: 16px;
   white-space: nowrap;
+}
+
+.screen .text-wrapper-brand {
   position: absolute;
+  top: 370px;
+  left: 320px;
+  font-weight: 700;
+  color: #000000;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.screen .div {
+  position: absolute;
+  top: 460px;
+  left: 320px;
+  font-weight: 700;
+  color: #000000;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.screen .text-wrapper {
+  position: absolute;
+  top: 545px;
+  left: 320px;
+  font-weight: 700;
+  color: #000000;
+  font-size: 16px;
+  white-space: nowrap;
 }
 
 .screen .rectangle-6 {
   position: absolute;
-  top: 228px;
+  top: 230px;
   left: 620px;
   width: 288px;
   height: 259px;
@@ -181,28 +176,28 @@ body {
 }
 
 .field-name {
-  top: 226px;
-  left: 306px;
-  width: 269px;
-  height: 42px;
-}
-
-.field-brand {
-  top: 346px;
+  top: 225px;
   left: 306px;
   width: 269px;
   height: 42px;
 }
 
 .field-price {
-  top: 462px;
+  top: 315px;
+  left: 306px;
+  width: 269px;
+  height: 42px;
+}
+
+.field-brand {
+  top: 405px;
   left: 306px;
   width: 269px;
   height: 42px;
 }
 
 .field-link {
-  top: 478px;
+  top: 495px;
   left: 306px;
   width: 269px;
   height: 42px;
@@ -216,10 +211,10 @@ body {
 }
 
 .field-description {
-  top: 570px;
+  top: 585px;
   left: 306px;
   width: 602px;
-  height: 118px;
+  height: 86px;
   resize: none;
   border-radius: 24px;
   overflow-y: auto;

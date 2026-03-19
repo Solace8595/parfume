@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const requestId = document.body.dataset.requestId;
-    const raw = localStorage.getItem(`perfume_result_${requestId}`);
+    const storageKey = `perfume_result_${requestId}`;
+    const raw = localStorage.getItem(storageKey);
 
     if (!raw) {
         document.getElementById('nameField').value = 'Данные не найдены';
@@ -18,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('nameField').value = data.name || '';
-    document.getElementById('brandField').value = data.brand || '';
     document.getElementById('priceField').value = data.price || '';
+    document.getElementById('brandField').value = data.brand || '';
     document.getElementById('descriptionField').value = data.description || '';
 
     const linkField = document.getElementById('linkField');
@@ -48,4 +49,24 @@ document.addEventListener('DOMContentLoaded', function () {
         image.style.display = 'none';
         image.removeAttribute('src');
     }
+
+    const cleanup = () => {
+        try {
+            if (data.image_url && data.image_url.startsWith('/static/perfume_images/')) {
+                navigator.sendBeacon(
+                    '/cleanup-result',
+                    new Blob(
+                        [JSON.stringify({ image_url: data.image_url })],
+                        { type: 'application/json' }
+                    )
+                );
+            }
+
+            localStorage.removeItem(storageKey);
+        } catch (e) {
+            // ничего
+        }
+    };
+
+    window.addEventListener('beforeunload', cleanup);
 });

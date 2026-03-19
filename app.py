@@ -5,6 +5,7 @@ from llm.deepseek import ask_deepseek
 from llm.gigachat import ask_gigachat
 from llm.perplexity import ask_perplexity
 from llm.test import ask_test
+from image_parse import delete_saved_image
 
 app = Flask(__name__)
 
@@ -68,6 +69,16 @@ def generate():
 @app.route('/result/<request_id>')
 def result(request_id):
     return render_template('result.html', request_id=request_id)
+
+
+@app.route('/cleanup-result', methods=['POST'])
+def cleanup_result():
+    data = request.get_json(silent=True) or {}
+    image_url = data.get('image_url', '')
+
+    delete_saved_image(image_url)
+
+    return jsonify({"success": True})
 
 
 if __name__ == '__main__':
