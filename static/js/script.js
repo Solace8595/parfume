@@ -60,7 +60,7 @@ document.getElementById('getPerfumeBtn').addEventListener('click', async functio
         llm: document.getElementById('llm').value
     };
 
-    if (!payload.gender || !payload.aroma || !payload.season || !payload.shop || !payload.llm) {
+    if (!payload.gender || !payload.aroma || !payload.season || !payload.shop || !payload.llm || !payload.associations) {
         alert('Пожалуйста, заполните все обязательные поля!');
         return;
     }

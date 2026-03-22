@@ -188,7 +188,9 @@ def ask_gigachat(gender, aroma, season, associations, shop):
     else:
         item = fallback_item(raw_response)
 
-    if not item["image_url"] and item["brand"] and item["name"]:
+    if item.get("brand") and item.get("name"):
         item["image_url"] = get_perfume_image(item["brand"], item["name"])
+    else:
+        item["image_url"] = get_perfume_image("Аромат", "Без названия")
 
     return item

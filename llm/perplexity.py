@@ -8,14 +8,24 @@ from llm.utils import get_shop_data, parse_model_response, normalize_perfume_ite
 load_dotenv()
 
 
-class PerplexityClient:
-    def __init__(self):
-        self.api_key = os.getenv("PERPLEXITY_API_KEY")
-        if not self.api_key:
-            raise ValueError("PERPLEXITY_API_KEY не найден в .env файле")
+class PerplexityOpenRouter:
+    """
+    Подключение к Perplexity через OpenRouter для подбора парфюмерных ароматов
+    """
 
-        self.url = "https://api.perplexity.ai/chat/completions"
-        self.model = "sonar"
+    def __init__(self):
+        self.api_key = os.getenv("OPENROUTER_API_KEY")
+        if not self.api_key:
+            raise ValueError("OPENROUTER_API_KEY не найден в .env файле")
+
+        self.base_url = "https://openrouter.ai/api/v1"
+        self.headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://parfume-app.ru",
+            "X-Title": "Perfume Finder App"
+        }
+        self.model = "perplexity/sonar"
 
     def get_perfume_recommendation(self, gender, aroma, season, shop_name, shop_link, associations=None):
         if not associations or associations.strip() == "":
@@ -40,7 +50,7 @@ class PerplexityClient:
 
 ВАЖНЫЕ ТРЕБОВАНИЯ К JSON:
 - Аромат должен быть в наличии на {shop_link}
-- Ссылка должна вести на КОНКРЕТНУЮ страницу товара
+- Ссылка должна вести на КОНКРЕТНУЮ страницу с парфюмом на сайте
 - Цена должна соответствовать реальной цене на сайте для любого объёма в наличии
 - Для фото используй ссылку с {shop_link} или fragrantica.ru
 
@@ -61,17 +71,16 @@ class PerplexityClient:
         payload = {
             "model": self.model,
             "messages": [
+                {"role": "system", "content": "Ты эксперт по парфюмерии. Отвечай подробно, следуя алгоритму."},
                 {"role": "user", "content": prompt}
             ],
-            "temperature": 0.3
+            "temperature": 0.5,
+            "max_tokens": 1200
         }
 
         response = requests.post(
-            self.url,
-            headers={
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
-            },
+            f"{self.base_url}/chat/completions",
+            headers=self.headers,
             json=payload,
             timeout=60
         )
@@ -84,7 +93,7 @@ class PerplexityClient:
 
 
 def ask_perplexity(gender, aroma, season, associations, shop):
-    client = PerplexityClient()
+    client = PerplexityOpenRouter()
 
     shop_data = get_shop_data(shop)
     raw_response = client.get_perfume_recommendation(
